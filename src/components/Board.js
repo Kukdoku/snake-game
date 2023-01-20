@@ -1,12 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState, useEffect } from "react";
 import {
   randomIntFromInterval,
   reverseLinkedList,
   useInterval,
   Direction,
-} from '../utills/methods';
+} from "../utills/methods";
 
-import './board.css';
+import "./board.css";
 
 class LinkedListNode {
   constructor(value) {
@@ -23,10 +23,12 @@ class LinkedList {
   }
 }
 
-const BOARD_SIZE = 12;
+const BoardX = 30;
+const BoardY = 20;
+
 const PROBABILITY_OF_DIRECTION_REVERSAL_FOOD = 0.3;
 
-const getStartingSnakeLLValue = board => {
+const getStartingSnakeLLValue = (board) => {
   const rowSize = board.length;
   const starting = Math.floor(Math.random() * rowSize);
   const startingCell = board[starting][starting];
@@ -39,13 +41,13 @@ const getStartingSnakeLLValue = board => {
 
 const Board = () => {
   const [score, setScore] = useState(0);
-  const [board, setBoard] = useState(createBoard(BOARD_SIZE));
+  const board = createBoard(BoardX, BoardY);
   const [snake, setSnake] = useState(
-    new LinkedList(getStartingSnakeLLValue(board)),
+    new LinkedList(getStartingSnakeLLValue(board))
   );
 
   const [snakeCells, setSnakeCells] = useState(
-    new Set([snake.head.value.cell]),
+    new Set([snake.head.value.cell])
   );
   // Naively set the starting food cell 5 cells away from the starting snake cell.
   const [foodCell, setFoodCell] = useState(snake.head.value.cell + 5);
@@ -54,18 +56,18 @@ const Board = () => {
     useState(false);
 
   useEffect(() => {
-    window.addEventListener('keydown', e => {
+    window.addEventListener("keydown", (e) => {
       handleKeydown(e);
     });
-  }, []);
+  });
 
   useInterval(() => {
     moveSnake();
   }, 150);
 
-  const handleKeydown = e => {
+  const handleKeydown = (e) => {
     const newDirection = getDirectionFromKey(e.key);
-    const isValidDirection = newDirection !== '';
+    const isValidDirection = newDirection !== "";
     if (!isValidDirection) return;
     const snakeWillRunIntoItself =
       getOppositeDirection(newDirection) === direction && snakeCells.size > 1;
@@ -116,7 +118,7 @@ const Board = () => {
 
     setSnakeCells(newSnakeCells);
   };
-  const growSnake = newSnakeCells => {
+  const growSnake = (newSnakeCells) => {
     const growthNodeCoords = getGrowthNodeCoords(snake.tail, direction);
     if (isOutOfBounds(growthNodeCoords, board)) {
       return;
@@ -145,8 +147,8 @@ const Board = () => {
     snake.tail = snakeHead;
   };
 
-  const handleFoodConsumption = newSnakeCells => {
-    const maxPossibleCellValue = BOARD_SIZE * BOARD_SIZE;
+  const handleFoodConsumption = (newSnakeCells) => {
+    const maxPossibleCellValue = BoardX * BoardY;
     let nextFoodCell;
     while (true) {
       nextFoodCell = randomIntFromInterval(1, maxPossibleCellValue);
@@ -183,7 +185,7 @@ const Board = () => {
                 cellValue,
                 foodCell,
                 foodShouldReverseDirection,
-                snakeCells,
+                snakeCells
               );
               return <div key={cellIdx} className={className}></div>;
             })}
@@ -194,12 +196,12 @@ const Board = () => {
   );
 };
 
-const createBoard = BOARD_SIZE => {
+const createBoard = (x,y) => {
   let counter = 1;
   const board = [];
-  for (let row = 0; row < BOARD_SIZE; row++) {
+  for (let row = 0; row < x; row++) {
     const currentRow = [];
-    for (let col = 0; col < BOARD_SIZE; col++) {
+    for (let col = 0; col < y; col++) {
       currentRow.push(counter++);
     }
     board.push(currentRow);
@@ -235,24 +237,24 @@ const getCoordsInDirection = (coords, direction) => {
 };
 
 const isOutOfBounds = (coords, board) => {
-  const {row, col} = coords;
+  const { row, col } = coords;
   if (row < 0 || col < 0) return true;
   if (row >= board.length || col >= board[0].length) return true;
   return false;
 };
 
-const getDirectionFromKey = key => {
-  if (key === 'ArrowUp') return Direction.UP;
-  if (key === 'ArrowRight') return Direction.RIGHT;
-  if (key === 'ArrowDown') return Direction.DOWN;
-  if (key === 'ArrowLeft') return Direction.LEFT;
-  return '';
+const getDirectionFromKey = (key) => {
+  if (key === "ArrowUp") return Direction.UP;
+  if (key === "ArrowRight") return Direction.RIGHT;
+  if (key === "ArrowDown") return Direction.DOWN;
+  if (key === "ArrowLeft") return Direction.LEFT;
+  return "";
 };
 
 const getNextNodeDirection = (node, currentDirection) => {
   if (node.next === null) return currentDirection;
-  const {row: currentRow, col: currentCol} = node.value;
-  const {row: nextRow, col: nextCol} = node.next.value;
+  const { row: currentRow, col: currentCol } = node.value;
+  const { row: nextRow, col: nextCol } = node.next.value;
   if (nextRow === currentRow && nextCol === currentCol + 1) {
     return Direction.RIGHT;
   }
@@ -265,13 +267,13 @@ const getNextNodeDirection = (node, currentDirection) => {
   if (nextCol === currentCol && nextRow === currentRow - 1) {
     return Direction.UP;
   }
-  return '';
+  return "";
 };
 
 const getGrowthNodeCoords = (snakeTail, currentDirection) => {
   const tailNextNodeDirection = getNextNodeDirection(
     snakeTail,
-    currentDirection,
+    currentDirection
   );
   const growthDirection = getOppositeDirection(tailNextNodeDirection);
   const currentTailCoords = {
@@ -280,12 +282,12 @@ const getGrowthNodeCoords = (snakeTail, currentDirection) => {
   };
   const growthNodeCoords = getCoordsInDirection(
     currentTailCoords,
-    growthDirection,
+    growthDirection
   );
   return growthNodeCoords;
 };
 
-const getOppositeDirection = direction => {
+const getOppositeDirection = (direction) => {
   if (direction === Direction.UP) return Direction.DOWN;
   if (direction === Direction.RIGHT) return Direction.LEFT;
   if (direction === Direction.DOWN) return Direction.UP;
@@ -296,17 +298,17 @@ const getCellClassName = (
   cellValue,
   foodCell,
   foodShouldReverseDirection,
-  snakeCells,
+  snakeCells
 ) => {
-  let className = 'cell';
+  let className = "cell";
   if (cellValue === foodCell) {
     if (foodShouldReverseDirection) {
-      className = 'cell cell-purple';
+      className = "cell cell-purple";
     } else {
-      className = 'cell cell-red';
+      className = "cell cell-red";
     }
   }
-  if (snakeCells.has(cellValue)) className = 'cell cell-green';
+  if (snakeCells.has(cellValue)) className = "cell cell-green";
 
   return className;
 };
