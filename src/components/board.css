@@ -1,0 +1,89 @@
+@import url(../utills/default.css);
+
+.board {
+  border: 10px solid var(--boardColor);
+  background: var(--backgroundImage);
+  border-radius: 10px;
+}
+
+.cell-green {
+  background-color: var(--snakeColor);
+}
+
+.cell-red {
+  background-color: var(--fruitColor);
+}
+
+.cell-purple {
+  background-color: var(--purple);
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .row {
+    height: 10px;
+  }
+
+  .cell {
+    width: 10px;
+    height: 10px;
+
+    display: inline-block;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .row {
+    height: 15px;
+  }
+
+  .cell {
+    width: 15px;
+    height: 15px;
+
+    display: inline-block;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .row {
+    height: 20px;
+  }
+
+  .cell {
+    width: 20px;
+    height: 20px;
+
+    display: inline-block;
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .row {
+    height: 25px;
+  }
+
+  .cell {
+    width: 25px;
+    height: 25px;
+
+    display: inline-block;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  .row {
+    height: 30px;
+  }
+
+  .cell {
+    width: 30px;
+    height: 30px;
+
+    display: inline-block;
+  }
+}

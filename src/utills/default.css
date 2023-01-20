@@ -1,0 +1,7 @@
+:root {
+  --boardColor: rgb(134, 154, 189);
+  --snakeColor: rgb(19, 148, 248);
+  --fruitColor: rgb(255, 0, 157);
+  --backgroundImage: url("https://www.freecodecamp.org/news/content/images/2022/09/jonatan-pie-3l3RwQdHRHg-unsplash.jpg");
+  --purple: purple;
+}
